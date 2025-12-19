@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: rainyadmin
+  datasource:
+    url: jdbc:mysql://localhost/rainyadmin
+    username: root
+    password: 1234
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  threads:
+    virtual:
+      enabled: true
+sa-token:
+  token-name: satoken
+  timeout: 0
+  active-timeout: 86400
+  is-concurrent: true
+  is-share: false
+  token-style: tik
+  is-log: true
+  is-read-body: false
+  is-read-cookie: false
+  is-read-header: true
