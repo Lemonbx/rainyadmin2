@@ -4,7 +4,7 @@ import me.inory.log.formatter.LineColorfulFormat
 import me.inory.log.formatter.LogFormat
 import me.inory.log.model.LogInfo
 import me.inory.log.model.LogLevel
-import me.inory.log.model.getStackOffset
+import me.inory.log.model.isLoggingClass
 import org.slf4j.Marker
 import org.slf4j.event.Level
 import org.slf4j.helpers.MessageFormatter
@@ -91,14 +91,12 @@ object LogUtil {
     )
 
     private fun getStack(offset: Int): StackTraceElement? {
-        val currentThread = Thread.currentThread()
-        val trace = currentThread.stackTrace
-        // Locate the caller of the logger
-        val index = getStackOffset(trace)
-        return if (index != -1 && index + 1 + offset < trace.size) {
-            trace[index + 1 + offset]
-        } else {
-            null
+        return StackWalker.getInstance().walk { stream ->
+            stream.filter { !isLoggingClass(it.className) }
+                .skip(offset.toLong())
+                .findFirst()
+                .map { it.toStackTraceElement() }
+                .orElse(null)
         }
     }
 

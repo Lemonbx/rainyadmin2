@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(private val sysUserRepo: SysUserRepo) : BaseController() {
     @PostMapping("/login")
     fun login(@RequestBody body: LoginBody): R {
-        println(BCrypt.hashpw(body.password))
         val user = sysUserRepo.getByUsername(body.username) ?: return "用户名或密码错误".error()
         if (!BCrypt.checkpw(body.password, user.password)) {
             return "用户名或密码错误".error()
