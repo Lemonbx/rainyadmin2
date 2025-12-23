@@ -1,8 +1,10 @@
 package me.inory.rainyadmin.project.controller
 
 import cn.dev33.satoken.annotation.SaCheckPermission
+import cn.dev33.satoken.annotation.SaMode
 import cn.hutool.crypto.digest.BCrypt
 import com.querydsl.core.BooleanBuilder
+import me.inory.rainyadmin.anno.SaAdminCheckPermission
 import me.inory.rainyadmin.project.dto.RoleListQuery
 import me.inory.rainyadmin.project.dto.SysRoleInsertInput
 import me.inory.rainyadmin.project.dto.SysRoleMapper
@@ -27,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/a/sysrole")
 class SysRoleController(private val sysRoleRepo: SysRoleRepo, private val sysRoleMapper: SysRoleMapper) :
     BaseController() {
-    @SaCheckPermission("sys:role:query")
+    @SaAdminCheckPermission("sys:role:query", "sys:user:save", mode = SaMode.OR)
     @GetMapping("/")
     fun listUsers(roleListQuery: RoleListQuery): R {
         val sysRole = QSysRole.sysRole
@@ -41,14 +43,14 @@ class SysRoleController(private val sysRoleRepo: SysRoleRepo, private val sysRol
         }
     }
 
-    @SaCheckPermission("sys:role:query")
+    @SaAdminCheckPermission("sys:role:query")
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Long): R {
         return sysRoleRepo.findByIdOrNull(id)?.let { sysRoleMapper.toItem(it) }.data()
     }
 
     @PostMapping("/")
-    @SaCheckPermission("sys:role:save")
+    @SaAdminCheckPermission("sys:role:save")
     @Transactional(rollbackFor = [Exception::class])
     fun insert(@RequestBody role: SysRoleInsertInput): R {
         if (sysRoleRepo.existsByRolekey(role.rolekey)) {
@@ -60,19 +62,20 @@ class SysRoleController(private val sysRoleRepo: SysRoleRepo, private val sysRol
     }
 
     @PutMapping("/")
-    @SaCheckPermission("sys:user:save")
+    @SaAdminCheckPermission("sys:user:save")
     @Transactional(rollbackFor = [Exception::class])
     fun update(@RequestBody role: SysRoleUpdateInput): R {
         if (sysRoleRepo.existsByRolekeyAndIdNot(role.rolekey, role.id)) {
             return "角色key已存在".error()
         }
-        val roleData = sysRoleRepo.findByIdOrNull(role.id) ?: return R.error("用户不存在")
+        val roleData = sysRoleRepo.findByIdOrNull(role.id) ?: return R.error("角色不存在")
         sysRoleMapper.copy(role, roleData)
         sysRoleRepo.save(roleData)
         return R.ok()
     }
 
     @DeleteMapping("/{id}")
+    @Transactional(rollbackFor = [Exception::class])
     fun delete(@PathVariable id: Long): R {
         sysRoleRepo.deleteById(id)
         return R.ok()

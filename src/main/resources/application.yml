@@ -13,8 +13,8 @@ spring:
     virtual:
       enabled: true
 sa-token:
-  token-name: satoken
-  timeout: 0
+  token-name: rainytoken
+  timeout: -1
   active-timeout: 86400
   is-concurrent: true
   is-share: false
@@ -23,3 +23,5 @@ sa-token:
   is-read-body: false
   is-read-cookie: false
   is-read-header: true
+server:
+  port: 12366

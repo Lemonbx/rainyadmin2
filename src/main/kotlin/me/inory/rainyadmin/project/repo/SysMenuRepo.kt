@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SysMenuRepo: CrudRepository<SysMenu, Long>, QuerydslPredicateExecutor<SysUser> {
+interface SysMenuRepo: CrudRepository<SysMenu, Long>, QuerydslPredicateExecutor<SysMenu> {
 }

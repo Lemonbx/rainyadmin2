@@ -53,7 +53,6 @@ object LogUtil {
             return
         }
         println(buildString {
-            append("\n")
             groupLogs.get()?.forEach {
                 append(buildStr(it))
                 append("\n")

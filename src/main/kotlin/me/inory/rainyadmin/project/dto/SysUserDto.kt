@@ -40,18 +40,21 @@ data class GetUserInfoResp(
     val nickname: String?,
     val username: String?,
     val menus: List<MenuInfo>,
-    val roles: List<RoleInfo>
+    val roles: List<RoleInfo>,
+    val permissions: List<String>
 ) {
     companion object {
         fun from(user: SysUser): GetUserInfoResp {
             val roles = user.role
-            val menus = roles.flatMap { it.menu }
+            val menus = roles.flatMap { it.menu }.distinctBy { it.id }
+            val permissions = menus.mapNotNull { it.perms }.distinct()
             return GetUserInfoResp(
                 user.id,
                 user.nickname,
                 user.username,
-                SysMenuMapper.INSTANCE.toInfo(menus),
-                SysRoleMapper.INSTANCE.toInfo(roles)
+                SysMenuMapper.INSTANCE.toInfo(menus).filter { a->a.type != 3 },
+                SysRoleMapper.INSTANCE.toInfo(roles),
+                permissions
             )
         }
     }

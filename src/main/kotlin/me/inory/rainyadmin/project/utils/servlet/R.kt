@@ -40,8 +40,6 @@ class R : HashMap<String?, Any?> {
         const val SUCCESS: Int = 1
         const val ERROR: Int = 400
         const val NOAUTH: Int = 401
-        const val NOACCOUNT: Int = 10000
-        const val FIELDERR: Int = 667
         const val EXCEPTION: Int = 500
 
         fun ok(): R {

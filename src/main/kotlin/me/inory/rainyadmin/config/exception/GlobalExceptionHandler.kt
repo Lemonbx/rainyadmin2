@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class GlobalExceptionHandler {
     @ExceptionHandler(value = [NotLoginException::class])
-    fun notLoginException(e: NotLoginException?): R {
-        return R.r(401, "登录失效")
+    fun notLoginException(e: NotLoginException): R {
+        e.printStackTrace()
+        return R.r(R.NOAUTH, "登录失效")
     }
 
     @ExceptionHandler(value = [BusinessException::class])
@@ -20,6 +21,6 @@ class GlobalExceptionHandler {
     @ExceptionHandler(value = [Exception::class])
     fun handleException(e: Exception): R {
         e.printStackTrace()
-        return R.r(500, e.message)
+        return R.r(R.EXCEPTION, e.message)
     }
 }

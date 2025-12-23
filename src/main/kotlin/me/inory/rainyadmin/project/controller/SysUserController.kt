@@ -3,6 +3,7 @@ package me.inory.rainyadmin.project.controller
 import cn.dev33.satoken.annotation.SaCheckPermission
 import cn.hutool.crypto.digest.BCrypt
 import com.querydsl.core.BooleanBuilder
+import me.inory.rainyadmin.anno.SaAdminCheckPermission
 import me.inory.rainyadmin.project.dto.SysUserInsertInput
 import me.inory.rainyadmin.project.dto.SysUserMapper
 import me.inory.rainyadmin.project.dto.SysUserUpdateInput
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/a/sysusers")
 class SysUserController(private val sysUserRepo: SysUserRepo, private val sysUserMapper: SysUserMapper) :
     BaseController() {
-    @SaCheckPermission("sys:user:query")
+    @SaAdminCheckPermission("sys:user:query")
     @GetMapping("/")
     fun listUsers(userListQuery: UserListQuery): R {
         val sysUser = QSysUser.sysUser
@@ -43,14 +44,14 @@ class SysUserController(private val sysUserRepo: SysUserRepo, private val sysUse
         }
     }
 
-    @SaCheckPermission("sys:user:query")
+    @SaAdminCheckPermission("sys:user:query")
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Long): R {
         return sysUserRepo.findByIdOrNull(id)?.let { sysUserMapper.toItem(it) }.data()
     }
 
     @PostMapping("/")
-    @SaCheckPermission("sys:user:save")
+    @SaAdminCheckPermission("sys:user:save")
     @Transactional(rollbackFor = [Exception::class])
     fun insert(@RequestBody user: SysUserInsertInput): R {
         if (sysUserRepo.existsByUsername(user.username)) {
@@ -63,7 +64,7 @@ class SysUserController(private val sysUserRepo: SysUserRepo, private val sysUse
     }
 
     @PutMapping("/")
-    @SaCheckPermission("sys:user:save")
+    @SaAdminCheckPermission("sys:user:save")
     @Transactional(rollbackFor = [Exception::class])
     fun update(@RequestBody user: SysUserUpdateInput): R {
         if (sysUserRepo.existsByUsernameAndIdNot(user.username, user.id)) {
@@ -79,6 +80,8 @@ class SysUserController(private val sysUserRepo: SysUserRepo, private val sysUse
     }
 
     @DeleteMapping("/{id}")
+    @SaAdminCheckPermission("sys:user:delete")
+    @Transactional(rollbackFor = [Exception::class])
     fun delete(@PathVariable id: Long): R {
         sysUserRepo.deleteById(id)
         return R.ok()
