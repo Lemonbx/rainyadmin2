@@ -77,22 +77,22 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu` (
-                                 `sys_role_id` bigint NOT NULL,
+                                 `role_id` bigint NOT NULL,
                                  `menu_id` bigint NOT NULL,
                                  KEY `FKf3mud4qoc7ayew8nml4plkevo` (`menu_id`),
-                                 KEY `FKrlvro3cc7mtq6cirsbv2m4e71` (`sys_role_id`),
+                                 KEY `FKrlvro3cc7mtq6cirsbv2m4e71` (`role_id`),
                                  CONSTRAINT `FKf3mud4qoc7ayew8nml4plkevo` FOREIGN KEY (`menu_id`) REFERENCES `sys_menu` (`id`),
-                                 CONSTRAINT `FKrlvro3cc7mtq6cirsbv2m4e71` FOREIGN KEY (`sys_role_id`) REFERENCES `sys_role` (`id`)
+                                 CONSTRAINT `FKrlvro3cc7mtq6cirsbv2m4e71` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 1);
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 3);
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 2);
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 4);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 1);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 3);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 2);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 4);
 COMMIT;
 
 -- ----------------------------
@@ -123,19 +123,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
-                                 `sys_user_id` bigint NOT NULL,
+                                 `user_id` bigint NOT NULL,
                                  `role_id` bigint NOT NULL,
                                  KEY `FKhh52n8vd4ny9ff4x9fb8v65qx` (`role_id`),
-                                 KEY `FKsbjvgfdwwy5rfbiag1bwh9x2b` (`sys_user_id`),
+                                 KEY `FKsbjvgfdwwy5rfbiag1bwh9x2b` (`user_id`),
                                  CONSTRAINT `FKhh52n8vd4ny9ff4x9fb8v65qx` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`),
-                                 CONSTRAINT `FKsbjvgfdwwy5rfbiag1bwh9x2b` FOREIGN KEY (`sys_user_id`) REFERENCES `sys_user` (`id`)
+                                 CONSTRAINT `FKsbjvgfdwwy5rfbiag1bwh9x2b` FOREIGN KEY (`user_id`) REFERENCES `sys_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user_role` (`sys_user_id`, `role_id`) VALUES (1, 1);
+INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (1, 1);
 COMMIT;
 
 -- ----------------------------
@@ -157,12 +157,12 @@ INSERT INTO `sys_menu` (`id`, `create_by`, `create_time`, `update_by`, `update_t
 INSERT INTO `sys_menu` (`id`, `create_by`, `create_time`, `update_by`, `update_time`, `component`, `logo`, `name`, `parent_id`, `path`, `perms`, `sort`, `type`) VALUES (10, NULL, '2025-12-23 17:00:00.000000', NULL, '2025-12-23 17:00:00.000000', NULL, NULL, '菜单删除', 8, NULL, 'sys:menu:delete', 2, 3);
 
 -- Add permissions to Administrator (Role 1)
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 5);
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 6);
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 7);
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 8);
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 9);
-INSERT INTO `sys_role_menu` (`sys_role_id`, `menu_id`) VALUES (1, 10);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 6);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 7);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 8);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 9);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 10);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
